@@ -7,7 +7,7 @@ import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 
 @Mixin(LootTable.class)
-public interface GetPools {
+public interface LootTableAccessor {
     @Accessor
     LootPool[] getpools();
 }

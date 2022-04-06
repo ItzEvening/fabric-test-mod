@@ -1,6 +1,7 @@
 package net.fabricmc.example;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.example.mixin.ExampleMixin;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.minecraft.entity.EntityType;
@@ -25,6 +26,8 @@ import net.minecraft.util.registry.Registry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.fabricmc.example.mixin.*;
 
 public class ExampleMod implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -61,7 +64,8 @@ public class ExampleMod implements ModInitializer {
 				//table.pool(poolBuilder);
 
 				LootTable creeperTable = lootManager.getTable(id);
-				LootPool[] creeperPool = ((GetPools)creeperTable).getpools();
+				LootPool[] creeperPool = ((LootTableAccessor)creeperTable).getpools();
+				LOGGER.info(Integer.toString(creeperPool.length));
 			}
 		});
 	}
