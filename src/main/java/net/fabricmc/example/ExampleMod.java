@@ -35,7 +35,7 @@ public class ExampleMod implements ModInitializer {
 	public static Settings tacoDiskSettings = new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.RARE).maxCount(1);
 	public static final Item TACO_DISK = new ModMusicDiscItem(15, tacoSound, tacoDiskSettings);
 
-	public static final TagKey<Item> MOD_DISK_TAG = TagKey.of(Registry.ITEM_KEY, new Identifier("modid", "creeper_drop_music_discs"));
+	public static final TagKey<Item> MOD_DISK_TAG = TagKey.of(Registry.ITEM_KEY, new Identifier("modid", "creeper_drop_mod_discs"));
 	public static final Identifier AWWW_MAN = EntityType.CREEPER.getLootTableId();
 
 	@Override
