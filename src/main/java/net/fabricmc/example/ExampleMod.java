@@ -7,8 +7,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Items;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.item.Item.Settings;
+import net.minecraft.loot.LootManager;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.condition.LootConditionManager;
+import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.entry.TagEntry;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.sound.SoundEvent;
@@ -46,10 +52,16 @@ public class ExampleMod implements ModInitializer {
 
 		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, table, setter) -> {
 			if (AWWW_MAN.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1))
-				.with(TagEntry.builder(MOD_DISK_TAG));
+				// FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1))
+				// .with(TagEntry.expandBuilder(MOD_DISK_TAG));
 
-				table.pool(poolBuilder);
+				// FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1))
+				// .with(ItemEntry.builder(Items.EGG));
+
+				//table.pool(poolBuilder);
+
+				LootTable creeperTable = lootManager.getTable(id);
+				LootPool[] creeperPool = ((GetPools)creeperTable).getpools();
 			}
 		});
 	}
