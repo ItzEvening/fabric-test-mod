@@ -64,7 +64,7 @@ public class ExampleMod implements ModInitializer {
 				//table.pool(poolBuilder);
 
 				LootTable creeperTable = lootManager.getTable(id);
-				LootPool[] creeperPool = ((LootTableAccessor)creeperTable).getpools();
+				LootPool[] creeperPool = ((LootTableAccessor)creeperTable).getPools();
 				LOGGER.info(Integer.toString(creeperPool.length));
 			}
 		});

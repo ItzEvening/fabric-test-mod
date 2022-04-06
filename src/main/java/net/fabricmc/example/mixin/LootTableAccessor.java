@@ -9,5 +9,5 @@ import net.minecraft.loot.LootTable;
 @Mixin(LootTable.class)
 public interface LootTableAccessor {
     @Accessor
-    LootPool[] getpools();
+    LootPool[] getPools();
 }
