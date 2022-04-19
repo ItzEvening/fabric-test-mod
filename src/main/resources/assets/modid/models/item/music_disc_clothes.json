@@ -2,6 +2,6 @@
     "parent": "minecraft:item/generated",
     "textures":
     {
-        "layer0": "modid:item/taco_disk"
+        "layer0": "modid:item/music_disc_clothes"
     }
 }

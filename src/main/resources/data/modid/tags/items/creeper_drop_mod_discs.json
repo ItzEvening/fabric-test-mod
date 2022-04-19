@@ -1,0 +1,20 @@
+{
+    "replace": false,
+    "values": [
+        "modid:music_disc_taco",
+        "modid:music_disc_bird",
+        "modid:music_disc_enough",
+        "modid:music_disc_lemonade",
+        "modid:music_disc_making",
+        "modid:music_disc_mediocre",
+        "modid:music_disc_missing",
+        "modid:music_disc_overit",
+        "modid:music_disc_pour",
+        "modid:music_disc_prime",
+        "modid:music_disc_sleepover",
+        "modid:music_disc_somewhere",
+        "modid:music_disc_storm",
+        "modid:music_disc_swig",
+        "modid:music_disc_tophat"
+    ]
+}
