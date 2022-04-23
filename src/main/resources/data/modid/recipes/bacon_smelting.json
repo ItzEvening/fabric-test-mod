@@ -1,0 +1,9 @@
+{
+    "type": "minecraft:smelting",
+    "ingredient":{
+        "item": "modid:bacon"
+    },
+    "result": "modid:cooked_bacon",
+    "experience": 0.1,
+    "cookingtime": 150
+}

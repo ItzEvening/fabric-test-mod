@@ -20,7 +20,6 @@ public class MixinHope {
     @Inject(at = @At("HEAD"), method = "deserialize", cancellable = true)
     private void injectLootTable(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext, CallbackInfoReturnable<LootTable> info)
     {
-        com.google.gson.JsonArray targetEntries = null;
         
         JsonObject jsonObject = JsonHelper.asObject(jsonElement, "loot table");
         if(jsonObject.has("type") && jsonObject.has("pools") && JsonHelper.getString(jsonObject, "type").equals("minecraft:entity"))
@@ -31,9 +30,14 @@ public class MixinHope {
             boolean alreadyInjected = false;
             boolean foundCreeperDiscPool = false;
 
+            com.google.gson.JsonArray targetEntries = null;
+            com.google.gson.JsonArray targetConditions = null;
+
             for(int i = 0; i < poolArray.size(); i++)
             {
-                com.google.gson.JsonArray daEntries = ((com.google.gson.JsonObject)poolArray.get(i)).getAsJsonArray("entries");
+                com.google.gson.JsonObject focusedPool = (com.google.gson.JsonObject)poolArray.get(i);
+                com.google.gson.JsonArray daEntries = focusedPool.getAsJsonArray("entries");
+                com.google.gson.JsonArray daConditions = focusedPool.getAsJsonArray("conditions");
                 for(int j = 0; j < daEntries.size(); j++)
                 {
                     JsonObject entry = (JsonObject)daEntries.get(j);
@@ -42,6 +46,7 @@ public class MixinHope {
                     {
                         System.out.println("Got it!");
                         targetEntries = daEntries;
+                        targetConditions = daConditions;
                         foundCreeperDiscPool = true;
                     }
                     else if(daName != null && daName.getAsString().equals("modid:creeper_drop_mod_discs"))
@@ -55,16 +60,54 @@ public class MixinHope {
 
             if(!alreadyInjected && foundCreeperDiscPool)
             {
-                JsonObject newEntry = new JsonObject();
-                newEntry.addProperty("type", "minecraft:tag");
-                newEntry.addProperty("name", "modid:creeper_drop_mod_discs");
-                newEntry.addProperty("expand", true);
+                //adds taco and annies discs to default drops
+                JsonObject defaultDiscEntry = new JsonObject();
+                defaultDiscEntry.addProperty("type", "minecraft:tag");
+                defaultDiscEntry.addProperty("name", "modid:creeper_drop_mod_discs");
+                defaultDiscEntry.addProperty("expand", true);
+                targetEntries.add((JsonElement)defaultDiscEntry);
 
-                targetEntries.add((JsonElement)newEntry);
+                System.out.println("Before");
+                System.out.println(targetConditions.size());
+
+                //forms condition for creeper being named dream
+                JsonObject dreamCondition = inverseNameCondition("Dream");
+                
+                //forms condition for creeper being named clayton ray huff
+                JsonObject claytonCondition = inverseNameCondition("Clayton Ray Huff");
+
+                //adds the inverted dream condition to default disc pool
+                JsonObject defaultDiscCondition = new JsonObject();
+                defaultDiscCondition.addProperty("condition", "minecraft:inverted");
+                defaultDiscCondition.add("term", dreamCondition);
+                targetConditions.add(defaultDiscCondition);
+
+                //adds the inverted clayton condition to default disc pool
+                defaultDiscCondition = new JsonObject();
+                defaultDiscCondition.addProperty("condition", "minecraft:inverted");
+                defaultDiscCondition.add("term", claytonCondition);
+                targetConditions.add(defaultDiscCondition);
+
+                System.out.println("After");
+                System.out.println(targetConditions.size());
 
                 LootTable.Serializer huh = new LootTable.Serializer();
                 info.setReturnValue(huh.deserialize(jsonElement, type, jsonDeserializationContext));
             }
         }
+    }
+
+    private JsonObject inverseNameCondition(String name)
+    {
+        JsonObject output = new JsonObject();
+        JsonObject predicate;
+
+        output.addProperty("condition", "minecraft:entity_properties");
+        predicate = new JsonObject();
+        predicate.addProperty("nbt", "{CustomName:'{\"text\":\"" + name + "\"}'}");
+        output.add("predicate", predicate);
+        output.addProperty("entity", "this");
+
+        return output;
     }
 }
